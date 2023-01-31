@@ -1,4 +1,5 @@
 import Block from './blocks/Block';
+import { Color } from './blocks/Colors';
 
 class Arena {
   private width: number;
@@ -29,6 +30,7 @@ class Arena {
     for (let i = 0; i < this.maxRow; i++) {
       for (let j = 0; j < this.maxCol; j++) {
         if (this.arenaArray[i][j] !== 0) {
+          this.ctx.fillStyle = Color.getColor(this.arenaArray[i][j]);
           this.ctx.fillRect(j * this.blockSize, i * this.blockSize, this.blockSize, this.blockSize);
         }
       }
@@ -105,13 +107,14 @@ class Arena {
         const arenaPiece = this.arenaArray[block.y + row]?.[block.x + col];
 
         if (block.y + row < this.maxRow && block.x + col < this.maxCol && arenaPiece === 0) {
-          this.arenaArray[block.y + row][block.x + col] = blockShape[row][col];
+          this.arenaArray[block.y + row][block.x + col] =
+            blockShape[row][col] !== 0 ? block.color : 0;
         }
       }
     }
   }
 
-  public checkFilledRow(): void {
+  public checkFilledRow(): number {
     let filledRowCount = 0;
     for (let row = 0; row < this.maxRow; row++) {
       const isFilled = !this.arenaArray[row].some((val) => val === 0);
@@ -123,6 +126,8 @@ class Arena {
     }
 
     if (filledRowCount > 0) this.dropRestBlock();
+
+    return filledRowCount;
   }
 
   public dropRestBlock(startIndex: number = 1): void {
@@ -131,14 +136,16 @@ class Arena {
     const isRowEmpty = !this.arenaArray[startIndex].some((val) => val !== 0);
     const isLastRowEmpty = !this.arenaArray[startIndex - 1].some((val) => val !== 0);
 
-    console.log(startIndex, isRowEmpty, isLastRowEmpty);
-
     if (isRowEmpty && !isLastRowEmpty) {
       this.arenaArray.splice(startIndex, 1);
       this.arenaArray.unshift(Array(this.maxCol).fill(0));
     }
 
     return this.dropRestBlock(++startIndex);
+  }
+
+  public isGameOver(): boolean {
+    return this.arenaArray[0].some((elm) => elm !== 0);
   }
 }
 
