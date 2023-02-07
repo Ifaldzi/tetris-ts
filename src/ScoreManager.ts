@@ -8,7 +8,7 @@ class ScoreManager {
   private scoreText: Text;
 
   constructor() {
-    this.scoreText = new Text(Constants.SCORE_ELEMENT_ID, `Score: ${this.score}`);
+    this.scoreText = new Text(Constants.SCORE_ELEMENT_ID, `${this.score}`);
   }
 
   public increaseScore(lineCount: number) {
@@ -42,7 +42,7 @@ class ScoreManager {
   }
 
   private rewriteScore() {
-    this.scoreText.changeText(`Score: ${this.score}`);
+    this.scoreText.changeText(`${this.score}`);
   }
 }
 

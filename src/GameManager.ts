@@ -7,7 +7,7 @@ class GameManager {
   public level: number = 0;
   public blockSpeed: number = 1;
 
-  private levelText: Text = new Text(Constants.LEVEL_ELEMENT_ID, `Level: ${this.level}`);
+  private levelText: Text = new Text(Constants.LEVEL_ELEMENT_ID, `${this.level}`);
 
   registerArena(arena: Arena) {
     this.arena = arena;
@@ -16,12 +16,12 @@ class GameManager {
   increaseLevel() {
     this.level += 1;
     this.blockSpeed += 0.5;
-    this.levelText.changeText(`Level: ${this.level}`);
+    this.levelText.changeText(`${this.level}`);
   }
 
   resetLevel() {
     this.level = 0;
-    this.levelText.changeText(`Level: ${this.level}`);
+    this.levelText.changeText(`${this.level}`);
   }
 }
 
